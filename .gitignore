@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Dataset directories (too large for git)
+crisis_dataset/
+user_crisis_dataset/
+
+# Sample data files (user-specific)
+reddit_train_voted_2plus_agrees.csv
+devset_420_final.csv
+prompt_short.txt
+train_sample.json
+
+# Model outputs
+crisis_gpt_oss_*/
+user_crisis_gpt_oss_*/
+*.out
+
+# Temporary files
+*.tmp
+*.log
+
+# Environment files
+.env
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

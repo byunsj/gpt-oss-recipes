@@ -1,0 +1,69 @@
+# User Crisis Classification - QLoRA Configuration for GPT-OSS 120B
+# 사용자의 원래 설정을 기반으로 최적화된 설정
+
+# Model - Using 120B bf16 version with QLoRA
+model_name_or_path: lmsys/gpt-oss-120b-bf16
+attn_implementation: eager  # 사용자 원래 설정과 동일
+torch_dtype: bfloat16
+
+# Quantization for QLoRA (사용자 원래 설정 반영)
+use_bnb: true
+bnb_4bit_compute_dtype: bfloat16
+bnb_4bit_quant_type: nf4
+bnb_4bit_use_double_quant: true
+
+# Dataset - 사용자 변환된 데이터셋
+dataset_name: ./user_crisis_dataset
+dataset_num_proc: 4
+
+# Hyperparameters (사용자 원래 설정 기반 최적화)
+learning_rate: 1.0e-5  # 사용자가 사용한 learning rate
+gradient_checkpointing: true
+num_train_epochs: 3.0
+logging_steps: 10  # 사용자 원래 설정
+per_device_train_batch_size: 1  # 사용자 원래 설정
+gradient_accumulation_steps: 128  # 사용자 원래 설정
+eval_strategy: epoch
+save_strategy: epoch
+save_total_limit: 3
+load_best_model_at_end: true
+metric_for_best_model: eval_loss
+greater_is_better: false
+
+# LoRA configuration (사용자 원래 설정 반영)
+use_peft: true
+lora_r: 16  # 사용자가 사용한 값
+lora_alpha: 32  # 사용자가 사용한 값
+lora_dropout: 0.05  # 사용자가 사용한 값
+lora_target_modules: 
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Sequence length (사용자 원래 설정)
+max_length: 1536
+warmup_steps: 100  # 사용자 원래 설정
+max_grad_norm: 1.0  # 사용자 원래 설정
+lr_scheduler_type: cosine_with_min_lr
+lr_scheduler_kwargs:
+  min_lr_rate: 0.1
+
+# Output and logging
+output_dir: ./user_crisis_gpt_oss_120b_qlora
+report_to:
+- wandb
+run_name: user-crisis-gpt-oss-120b-qlora
+seed: 42
+
+# Memory optimization (사용자 원래 설정 반영)
+bf16: true
+optim: paged_adamw_8bit  # 사용자가 사용한 optimizer
+gradient_checkpointing_kwargs:
+  use_reentrant: true  # 사용자 원래 설정
+dataloader_num_workers: 4  # 사용자 원래 설정
+dataloader_pin_memory: true  # 사용자 원래 설정
+remove_unused_columns: false  # 사용자 원래 설정
